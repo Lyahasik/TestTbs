@@ -18,12 +18,7 @@ namespace _Project.Client.Gameplay.Character
             UpdateSkillsActive(skillDataset);
         }
 
-        private void UpdateSkillsActive(List<SkillValueData> skillDataset)
-        {
-            if (skillDataset == null)
-                return;
-            
+        private void UpdateSkillsActive(List<SkillValueData> skillDataset) => 
             skillBarrier.SetActive(skillDataset.Find(data => data.Type == SkillType.Barrier).IsActive);
-        }
     }
 }

@@ -47,9 +47,9 @@ namespace _Project.Server.Gameplay.Battle.Services
             _networkMessengerClient.ReceiveMessage(new UpdateStatsDataMessage
             {
                 ParticipantPlayer = new ParticipantData { Health = _playerStats.Health, Damage = _playerStats.Damage },
-                SkillsPlayer = _playerStats.Skills.GetSkillDataset(),
+                SkillsPlayer = _playerStats.Skills.GetSkillValueDataset(),
                 ParticipantEnemy = new ParticipantData { Health = _enemyStats.Health, Damage = _enemyStats.Damage },
-                SkillsEnemy = _enemyStats.Skills.GetSkillDataset(),
+                SkillsEnemy = _enemyStats.Skills.GetSkillValueDataset(),
             });
         }
 
@@ -58,8 +58,8 @@ namespace _Project.Server.Gameplay.Battle.Services
             switch (stepDataMessage.SkillType)
             {
                 case SkillType.Attack:
+                    Debug.Log($"Player attack.");
                     CauseDamage(_playerStats, _enemyStats);
-                    Debug.Log($"Player attack: { _playerStats.Damage } ");
                     break;
                 case SkillType.Barrier:
                     ActivateBarrier(_playerStats, true);
@@ -80,8 +80,8 @@ namespace _Project.Server.Gameplay.Battle.Services
             switch ((SkillType) skillTypeId)
             {
                 case SkillType.Attack:
+                    Debug.Log($"Enemy attack.");
                     CauseDamage(_enemyStats, _playerStats);
-                    Debug.Log($"Enemy attack: { _enemyStats.Damage }");
                     break;
                 case SkillType.Barrier:
                     ActivateBarrier(_enemyStats, false);
@@ -126,6 +126,7 @@ namespace _Project.Server.Gameplay.Battle.Services
                 }
             }
             
+            Debug.Log($"Damage: { totalDamage }");
             targetStats.LowerHealth(totalDamage);
         }
 

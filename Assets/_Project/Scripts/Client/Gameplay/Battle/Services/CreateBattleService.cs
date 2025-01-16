@@ -23,11 +23,13 @@ namespace _Project.Client.Gameplay.Battle.Services
 
         public CreateBattleService(IGameplayFactory gameplayFactory,
             NetworkMessengerServer networkMessengerServer,
-            GameplayBasis gameplayBasis)
+            GameplayBasis gameplayBasis,
+            HudView hudView)
         {
             _gameplayFactory = gameplayFactory;
             _networkMessengerServer = networkMessengerServer;
             _gameplayBasis = gameplayBasis;
+            _hudView = hudView;
         }
 
         public void RequestBattleData()
@@ -36,13 +38,17 @@ namespace _Project.Client.Gameplay.Battle.Services
         }
 
         public void CreateBattle(in ParticipantData playerData,
-            in ParticipantData enemyData)
+            List<SkillValueData> playerSkills,
+            in ParticipantData enemyData,
+            List<SkillValueData> enemySkills)
         {
+            _hudView.StartGame(playerSkills);
+            
             _player = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointPlayer);
-            _player.SetStats(playerData);
+            _player.SetStats(playerData, playerSkills);
             
             _enemy = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointEnemy);
-            _enemy.SetStats(enemyData);
+            _enemy.SetStats(enemyData, enemySkills);
         }
     }
 }

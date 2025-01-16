@@ -20,7 +20,7 @@ namespace _Project.Client.Gameplay.Character
         public SkillData GetSkillData(SkillType skillType) =>
             _skillDataset.Find(data => data.Type == skillType);
 
-        public List<SkillValueData> GetSkillDataset()
+        public List<SkillValueData> GetSkillValueDataset()
         {
             var skillValueDataset = new List<SkillValueData>();
             _skillDataset.ForEach(data => skillValueDataset.Add(data.ToValue()));

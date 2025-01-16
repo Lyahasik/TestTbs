@@ -16,15 +16,19 @@ namespace _Project.Client.Core.Network
             
             _messageHandlers = new ();
             
-            RegisterHandler<ParticipantsDataMessage>(OnGetParticipantsDataMessage);
+            RegisterHandler<StartDataMessage>(OnGetStartDataMessage);
             RegisterHandler<UpdateStatsDataMessage>(OnGetUpdateStatsDataMessage);
         }
 
-        private void OnGetParticipantsDataMessage(INetworkMessage message)
+        private void OnGetStartDataMessage(INetworkMessage message)
         {
-            var participantsDataMessage = (ParticipantsDataMessage) message;
+            var startDataMessage = (StartDataMessage) message;
             
-            _createBattleService.CreateBattle(participantsDataMessage.ParticipantPlayer, participantsDataMessage.ParticipantEnemy);
+            _createBattleService.CreateBattle(
+                startDataMessage.ParticipantPlayer,
+                startDataMessage.SkillsPlayer,
+                    startDataMessage.ParticipantEnemy,
+                startDataMessage.SkillsEnemy);
         }
 
         private void OnGetUpdateStatsDataMessage(INetworkMessage message)

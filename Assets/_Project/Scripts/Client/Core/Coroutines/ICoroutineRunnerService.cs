@@ -6,6 +6,7 @@ namespace _Project.Client.Core.Coroutines
 {
     public interface ICoroutineRunnerService : IService
     {
-        Coroutine StartCoroutine(IEnumerator coroutine);
+        public Coroutine StartCoroutine(IEnumerator coroutine);
+        public void StopAllCoroutines();
     }
 }

@@ -21,6 +21,13 @@ namespace _Project.Client.Gameplay.Battle.Services
             in ParticipantData enemyData,
             List<SkillValueData> enemySkills)
         {
+            if (playerData.Health == 0
+                || enemyData.Health == 0)
+            {
+                _hudView.GameEnd();
+                return;
+            }
+            
             _hudView.ShowStep(playerSkills);
             
             _createBattleService.Player.SetStats(playerData, playerSkills);

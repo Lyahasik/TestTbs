@@ -38,10 +38,13 @@ namespace _Project.Server.Gameplay.Battle.Services
             
             _processingBattleService.Initialize(playerStats, enemyStats);
             
-            _networkMessengerClient.ReceiveMessage(new ParticipantsDataMessage
+            _networkMessengerClient.ReceiveMessage(new StartDataMessage
             {
                 ParticipantPlayer = new ParticipantData { Health = playerStats.Health, Damage = playerStats.Damage },
-                ParticipantEnemy = new ParticipantData { Health = enemyStats.Health, Damage = enemyStats.Damage }
+                SkillsPlayer = playerSkills.GetSkillValueDataset(),
+                
+                ParticipantEnemy = new ParticipantData { Health = enemyStats.Health, Damage = enemyStats.Damage },
+                SkillsEnemy = enemySkills.GetSkillValueDataset(),
             });
         }
     }

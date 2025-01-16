@@ -8,7 +8,7 @@ namespace _Project.Client.Gameplay.Character
     {
         [SerializeField] private CharacterStatsView characterStatsView;
 
-        public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset = null)
+        public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset)
         {
             characterStatsView.SetStats(participantData, skillDataset);
         }

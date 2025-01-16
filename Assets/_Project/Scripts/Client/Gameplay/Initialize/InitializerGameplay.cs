@@ -37,17 +37,19 @@ namespace _Project.Client.Gameplay.Initialize
             RegisterGameplayFactory();
             RegisterProcessingRequestStepService();
 
+            var gameplayBasis = _gameplayServicesContainer.Single<IGameplayFactory>().CreateGameplayBasis();
+
+            RegisterProcessingBattleService();
+            RegisterGenerateBattleService();
+            
             var hudView = _gameplayServicesContainer.Single<IGameplayFactory>().CreateHudView();
             hudView.Construct(
                 _staticDataService,
+                _gameplayServicesContainer.Single<IGenerateBattleService>(),
                 _coreData.CoroutinesContainer,
                 _gameplayServicesContainer.Single<IProcessingRequestStepService>());
             
-            var gameplayBasis = _gameplayServicesContainer.Single<IGameplayFactory>().CreateGameplayBasis();
-
-            RegisterCreateBattleService(gameplayBasis);
-            RegisterProcessingBattleService();
-            RegisterGenerateBattleService();
+            RegisterCreateBattleService(gameplayBasis, hudView);
             RegisterProcessingStatsService(hudView);
             
             _coreData.NetworkMessengerClient.Initialize(
@@ -71,12 +73,13 @@ namespace _Project.Client.Gameplay.Initialize
             _gameplayServicesContainer.Register<IProcessingRequestStepService>(service);
         }
 
-        private void RegisterCreateBattleService(GameplayBasis gameplayBasis)
+        private void RegisterCreateBattleService(GameplayBasis gameplayBasis, HudView hudView)
         {
             var service = new CreateBattleService(
                 _gameplayServicesContainer.Single<IGameplayFactory>(),
                 _coreData.NetworkMessengerServer,
-                gameplayBasis);
+                gameplayBasis,
+                hudView);
             _gameplayServicesContainer.Register<ICreateBattleService>(service);
         }
 
