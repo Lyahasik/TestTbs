@@ -15,6 +15,9 @@ namespace _Project.Client.Gameplay.Battle.Services
         private CharacterView _player;
         private CharacterView _enemy;
 
+        public CharacterView Player => _player;
+        public CharacterView Enemy => _enemy;
+
         public CreateBattleService(IGameplayFactory gameplayFactory,
             NetworkMessengerServer networkMessengerServer,
             GameplayBasis gameplayBasis)
@@ -32,12 +35,10 @@ namespace _Project.Client.Gameplay.Battle.Services
         public void CreateBattle(in ParticipantData playerData, in ParticipantData enemyData)
         {
             _player = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointPlayer);
-            _player.Construct(playerData);
-            _player.Initialize();
+            _player.SetStats(playerData);
             
             _enemy = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointEnemy);
-            _enemy.Construct(enemyData);
-            _enemy.Initialize();
+            _enemy.SetStats(enemyData);
         }
     }
 }

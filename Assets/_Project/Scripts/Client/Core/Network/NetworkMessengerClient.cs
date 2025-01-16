@@ -7,14 +7,17 @@ namespace _Project.Client.Core.Network
     public class NetworkMessengerClient : NetworkMessenger
     {
         private ICreateBattleService _createBattleService;
+        private IProcessingStatsService _processingStatsService;
         
-        public void Initialize(ICreateBattleService createBattleService)
+        public void Initialize(ICreateBattleService createBattleService, IProcessingStatsService processingStatsService)
         {
             _createBattleService = createBattleService;
+            _processingStatsService = processingStatsService;
             
             _messageHandlers = new ();
             
             RegisterHandler<ParticipantsDataMessage>(OnGetParticipantsDataMessage);
+            RegisterHandler<UpdateStatsDataMessage>(OnGetUpdateStatsDataMessage);
         }
 
         private void OnGetParticipantsDataMessage(INetworkMessage message)
@@ -22,6 +25,13 @@ namespace _Project.Client.Core.Network
             var participantsDataMessage = (ParticipantsDataMessage) message;
             
             _createBattleService.CreateBattle(participantsDataMessage.Player, participantsDataMessage.Enemy);
+        }
+
+        private void OnGetUpdateStatsDataMessage(INetworkMessage message)
+        {
+            var updateStatsDataMessage = (UpdateStatsDataMessage) message;
+            
+            _processingStatsService.UpdateStats(updateStatsDataMessage.Player, updateStatsDataMessage.Enemy);
         }
     }
 }

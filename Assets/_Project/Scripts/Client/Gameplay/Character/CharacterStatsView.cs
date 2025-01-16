@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using _Project.Client.Gameplay.Battle;
+using TMPro;
 using UnityEngine;
 
 namespace _Project.Client.Gameplay.Character
@@ -7,9 +8,9 @@ namespace _Project.Client.Gameplay.Character
     {
         [SerializeField] private TMP_Text healthValueText;
 
-        public void SetStats(CharacterStats characterStats)
+        public void SetStats(in ParticipantData participantData)
         {
-            healthValueText.text = characterStats.Health.ToString();
+            healthValueText.text = participantData.Health.ToString();
         }
     }
 }
