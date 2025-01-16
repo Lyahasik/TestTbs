@@ -4,7 +4,7 @@
     {
         public const string SCENE_NAME_GAMEPLAY = "Gameplay";
         
-        public const float NUMBER_SKILL_TYPES = 3;
+        public const float NUMBER_SKILL_TYPES = 4;
         public const float DURATION_STEP_ENEMY = 1f;
     }
 }

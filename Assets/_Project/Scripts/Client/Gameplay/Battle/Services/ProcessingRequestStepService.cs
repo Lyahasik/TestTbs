@@ -12,19 +12,16 @@ namespace _Project.Client.Gameplay.Battle.Services
             _networkMessengerServer = networkMessengerServer;
         }
 
-        public void RequestAttack()
-        {
+        public void RequestAttack() => 
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Attack });
-        }
 
-        public void RequestBarrier()
-        {
+        public void RequestBarrier() => 
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Barrier });
-        }
 
-        public void RequestRestore()
-        {
+        public void RequestRestore() => 
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Restore });
-        }
+
+        public void RequestFire() => 
+            _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Fire });
     }
 }

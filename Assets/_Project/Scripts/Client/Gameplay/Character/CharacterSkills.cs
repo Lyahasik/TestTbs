@@ -9,12 +9,15 @@ namespace _Project.Client.Gameplay.Character
 
         public List<SkillData> SkillDataset => _skillDataset;
 
-        public CharacterSkills(in SkillData barrierData, in SkillData restoreData)
+        public CharacterSkills(in SkillData barrierData,
+            in SkillData restoreData,
+            in SkillData fireData)
         {
             _skillDataset = new List<SkillData>
             {
                 barrierData,
-                restoreData
+                restoreData,
+                fireData
             };
         }
 
@@ -28,25 +31,5 @@ namespace _Project.Client.Gameplay.Character
 
             return skillValueDataset;
         }
-
-        public void SetTimeAction(SkillType skillType, in int value) => 
-            GetSkillData(skillType).TimeAction = value;
-
-        public void LowerTimeAction(SkillType skillType, in int value) =>
-            GetSkillData(skillType).TimeAction -= value;
-
-        public void SetRecovery(SkillType skillType, in int value) => 
-            GetSkillData(skillType).Recovery = value;
-
-        public void LowerRecovery(SkillType skillType, in int value) =>
-            GetSkillData(skillType).Recovery -= value;
-
-        public void SetValue(SkillType skillType, in int value) => 
-            GetSkillData(skillType).Value = value;
-        public int GetValue(SkillType skillType) => 
-            GetSkillData(skillType).Value;
-
-        public void LowerValue(SkillType skillType, in int value) =>
-            GetSkillData(skillType).Value -= value;
     }
 }

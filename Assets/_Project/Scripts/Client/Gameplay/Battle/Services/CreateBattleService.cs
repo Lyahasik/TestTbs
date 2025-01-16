@@ -44,11 +44,13 @@ namespace _Project.Client.Gameplay.Battle.Services
         {
             _hudView.StartGame(playerSkills);
             
-            _player = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointPlayer);
-            _player.SetStats(playerData, playerSkills);
+            if (_player == null)
+                _player = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointPlayer);
+            _player.SetStats(playerData, playerSkills, enemySkills);
             
-            _enemy = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointEnemy);
-            _enemy.SetStats(enemyData, enemySkills);
+            if (_enemy == null)
+                _enemy = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointEnemy);
+            _enemy.SetStats(enemyData, enemySkills, playerSkills);
         }
     }
 }

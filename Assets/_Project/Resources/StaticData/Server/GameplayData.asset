@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cee8f2dd2c84837a8b6eb2d2a49dfa3, type: 3}
   m_Name: GameplayData
   m_EditorClassIdentifier: 
+  FireDamage: 5
   PlayerData:
     Health: 50
     Damage: 8
@@ -24,6 +25,10 @@ MonoBehaviour:
       TimeAction: 3
       Recovery: 5
       Value: 2
+    - Type: 3
+      TimeAction: 5
+      Recovery: 6
+      Value: 1
   EnemyData:
     Health: 50
     Damage: 8
@@ -36,3 +41,7 @@ MonoBehaviour:
       TimeAction: 3
       Recovery: 5
       Value: 2
+    - Type: 3
+      TimeAction: 5
+      Recovery: 6
+      Value: 1

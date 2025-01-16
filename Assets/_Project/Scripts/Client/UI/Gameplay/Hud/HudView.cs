@@ -20,6 +20,7 @@ namespace _Project.Client.UI.Gameplay.Hud
         [SerializeField] private SkillButton attackButton;
         [SerializeField] private SkillButton barrierButton;
         [SerializeField] private SkillButton restoreButton;
+        [SerializeField] private SkillButton fireButton;
 
         private IStaticDataService _staticDataService;
         private ICoroutineRunnerService _coroutineRunnerService;
@@ -69,6 +70,11 @@ namespace _Project.Client.UI.Gameplay.Hud
             _processingRequestStepService.RequestRestore();
         }
 
+        public void Fire()
+        {
+            _processingRequestStepService.RequestFire();
+        }
+
         public void ShowStep(List<SkillValueData> playerSkills)
         {
             _playerSkills = playerSkills;
@@ -76,6 +82,7 @@ namespace _Project.Client.UI.Gameplay.Hud
             attackButton.interactable = false;
             barrierButton.interactable = false;
             restoreButton.interactable = false;
+            fireButton.interactable = false;
 
             _coroutineRunnerService.StartCoroutine(Ready());
         }
@@ -96,12 +103,18 @@ namespace _Project.Client.UI.Gameplay.Hud
         private void UpdateSkills()
         {
             attackButton.SetRecovery(0);
+            
             barrierButton.SetRecovery(
                 _playerSkills.Find(data => data.Type == SkillType.Barrier).Recovery,
                 _staticDataService.GetPlayerSkillData(SkillType.Barrier).Recovery);
+            
             restoreButton.SetRecovery(
                 _playerSkills.Find(data => data.Type == SkillType.Restore).Recovery,
                 _staticDataService.GetPlayerSkillData(SkillType.Restore).Recovery);
+            
+            fireButton.SetRecovery(
+                _playerSkills.Find(data => data.Type == SkillType.Fire).Recovery,
+                _staticDataService.GetPlayerSkillData(SkillType.Fire).Recovery);
         }
     }
 }

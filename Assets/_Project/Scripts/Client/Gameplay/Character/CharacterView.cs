@@ -8,9 +8,11 @@ namespace _Project.Client.Gameplay.Character
     {
         [SerializeField] private CharacterStatsView characterStatsView;
 
-        public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset)
+        public void SetStats(in ParticipantData participantData,
+            List<SkillValueData> playerDataset,
+            List<SkillValueData> enemyDataset)
         {
-            characterStatsView.SetStats(participantData, skillDataset);
+            characterStatsView.SetStats(participantData, playerDataset, enemyDataset);
         }
     }
 }

@@ -11,18 +11,22 @@ namespace _Project.Client.Gameplay.Character
         [SerializeField] private TMP_Text healthValueText;
         [SerializeField] private GameObject skillBarrier;
         [SerializeField] private GameObject skillRestore;
+        [SerializeField] private GameObject skillFire;
 
-        public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset)
+        public void SetStats(in ParticipantData participantData,
+            List<SkillValueData> playerDataset,
+            List<SkillValueData> enemyDataset)
         {
             healthValueText.text = participantData.Health.ToString();
 
-            UpdateSkillsActive(skillDataset);
+            UpdateSkillsActive(playerDataset, enemyDataset);
         }
 
-        private void UpdateSkillsActive(List<SkillValueData> skillDataset)
+        private void UpdateSkillsActive(List<SkillValueData> playerDataset, List<SkillValueData> enemyDataset)
         {
-            skillBarrier.SetActive(skillDataset.Find(data => data.Type == SkillType.Barrier).IsActive);
-            skillRestore.SetActive(skillDataset.Find(data => data.Type == SkillType.Restore).IsActive);
+            skillBarrier.SetActive(playerDataset.Find(data => data.Type == SkillType.Barrier).IsActive);
+            skillRestore.SetActive(playerDataset.Find(data => data.Type == SkillType.Restore).IsActive);
+            skillFire.SetActive(enemyDataset.Find(data => data.Type == SkillType.Fire).IsActive);
         }
     }
 }

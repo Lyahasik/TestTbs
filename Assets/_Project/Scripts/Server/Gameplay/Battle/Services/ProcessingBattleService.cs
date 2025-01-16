@@ -71,9 +71,14 @@ namespace _Project.Server.Gameplay.Battle.Services
                     ActivateSkill(_playerStats, SkillType.Restore, true);
                     Debug.Log($"Player restore activate");
                     break;
+                case SkillType.Fire:
+                    _enemyStats.LowerHealth(_staticDataService.ServerGameplay.FireDamage);
+                    ActivateSkill(_playerStats, SkillType.Fire, true);
+                    Debug.Log($"Player fire activate");
+                    break;
             }
 
-            ApplyEffectSkills(_playerStats);
+            ApplyEffectSkills(_playerStats, _enemyStats);
             LowerRecoverySkills(_playerStats);
             
             ReceiveResult();
@@ -98,9 +103,14 @@ namespace _Project.Server.Gameplay.Battle.Services
                     ActivateSkill(_enemyStats, SkillType.Restore, false);
                     Debug.Log($"Enemy restore activate");
                     break;
+                case SkillType.Fire:
+                    _playerStats.LowerHealth(_staticDataService.ServerGameplay.FireDamage);
+                    ActivateSkill(_enemyStats, SkillType.Fire, false);
+                    Debug.Log($"Enemy fire activate");
+                    break;
             }
 
-            ApplyEffectSkills(_enemyStats);
+            ApplyEffectSkills(_enemyStats, _playerStats);
             LowerRecoverySkills(_enemyStats);
             
             ReceiveResult();
@@ -142,9 +152,9 @@ namespace _Project.Server.Gameplay.Battle.Services
             targetStats.LowerHealth(totalDamage);
         }
 
-        private void ApplyEffectSkills(CharacterStats characterStats)
+        private void ApplyEffectSkills(CharacterStats attakingStats, CharacterStats targetStats)
         {
-            characterStats.Skills.SkillDataset.ForEach(data =>
+            attakingStats.Skills.SkillDataset.ForEach(data =>
             {
                 if (data.IsReady)
                     return;
@@ -152,8 +162,12 @@ namespace _Project.Server.Gameplay.Battle.Services
                 switch (data.Type)
                 {
                     case SkillType.Restore:
-                        characterStats.RestoreHealth(data.Value);
+                        attakingStats.RestoreHealth(data.Value);
                         Debug.Log($"Restore health");
+                        break;
+                    case SkillType.Fire:
+                        targetStats.LowerHealth(data.Value);
+                        Debug.Log($"Take fire damage");
                         break;
                 }
             });

@@ -30,8 +30,8 @@ namespace _Project.Client.Gameplay.Battle.Services
             
             _hudView.ShowStep(playerSkills);
             
-            _createBattleService.Player.SetStats(playerData, playerSkills);
-            _createBattleService.Enemy.SetStats(enemyData, enemySkills);
+            _createBattleService.Player.SetStats(playerData, playerSkills, enemySkills);
+            _createBattleService.Enemy.SetStats(enemyData, enemySkills, playerSkills);
         }
     }
 }

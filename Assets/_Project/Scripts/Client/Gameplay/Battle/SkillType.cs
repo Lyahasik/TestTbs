@@ -4,6 +4,7 @@
     {
         Attack,
         Barrier,
-        Restore
+        Restore,
+        Fire
     }
 }
