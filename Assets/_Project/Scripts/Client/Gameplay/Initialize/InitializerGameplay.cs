@@ -2,6 +2,7 @@ using _Project.Client.Core.Factory.Gameplay;
 using _Project.Client.Core.Initialize;
 using _Project.Client.Core.Services;
 using _Project.Client.Core.StaticData.Services;
+using _Project.Client.Gameplay.Basis;
 using _Project.Client.Gameplay.Battle.Services;
 using _Project.Server.Gameplay.Battle.Services;
 using UnityEngine;
@@ -35,8 +36,9 @@ namespace _Project.Client.Gameplay.Initialize
             RegisterGameplayFactory();
 
             var hudView = _gameplayServicesContainer.Single<IGameplayFactory>().CreateHudView();
+            var gameplayBasis = _gameplayServicesContainer.Single<IGameplayFactory>().CreateGameplayBasis();
 
-            RegisterCreateBattleService();
+            RegisterCreateBattleService(gameplayBasis);
             RegisterGenerateBattleService();
         }
 
@@ -46,9 +48,12 @@ namespace _Project.Client.Gameplay.Initialize
             _gameplayServicesContainer.Register<IGameplayFactory>(service);
         }
 
-        private void RegisterCreateBattleService()
+        private void RegisterCreateBattleService(GameplayBasis gameplayBasis)
         {
-            var service = new CreateBattleService(_coreData.NetworkMessengerServer);
+            var service = new CreateBattleService(
+                _gameplayServicesContainer.Single<IGameplayFactory>(),
+                _coreData.NetworkMessengerServer,
+                gameplayBasis);
             _gameplayServicesContainer.Register<ICreateBattleService>(service);
             
             _coreData.NetworkMessengerClient.Initialize(service);

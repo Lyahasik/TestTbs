@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initializerGameplayPrefab: {fileID: 5265496607378968699, guid: b1da2198dd77adc44a2de089b560229f, type: 3}
   hudViewPrefab: {fileID: 8248891911705102734, guid: 0c7b7cb94d5d83a42a8125e04673bf54, type: 3}
+  gameplayBasisPrefab: {fileID: 7091349218363420626, guid: a92ab09b59c672d489c033cedbb42e7f, type: 3}
+  characterPrefab: {fileID: 8180782258076036746, guid: cb4132ef02cdcf740828cffe621344b1, type: 3}

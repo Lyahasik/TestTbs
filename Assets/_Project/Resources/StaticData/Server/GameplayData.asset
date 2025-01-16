@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cee8f2dd2c84837a8b6eb2d2a49dfa3, type: 3}
   m_Name: GameplayData
   m_EditorClassIdentifier: 
-  PlayerHealth: 10
-  PlayerDamage: 1
-  EnemyHealth: 10
-  EnemyDamage: 1
+  PlayerHealth: 50
+  PlayerDamage: 8
+  EnemyHealth: 40
+  EnemyDamage: 8
