@@ -5,6 +5,7 @@ using _Project.Client.Core.Network.Messages;
 using _Project.Client.Core.StaticData.Services;
 using _Project.Client.Gameplay.Battle.Services;
 using _Project.Client.Gameplay.Character;
+using _Project.Constants;
 using _Project.Server.Core.Network.ServerMessages;
 using _Project.Server.Gameplay.Battle.Services;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace _Project.Client.UI.Gameplay.Hud
         [Space]
         [SerializeField] private SkillButton attackButton;
         [SerializeField] private SkillButton barrierButton;
+        [SerializeField] private SkillButton restoreButton;
 
         private IStaticDataService _staticDataService;
         private ICoroutineRunnerService _coroutineRunnerService;
@@ -62,12 +64,18 @@ namespace _Project.Client.UI.Gameplay.Hud
             _processingRequestStepService.RequestBarrier();
         }
 
+        public void Restore()
+        {
+            _processingRequestStepService.RequestRestore();
+        }
+
         public void ShowStep(List<SkillValueData> playerSkills)
         {
             _playerSkills = playerSkills;
             
             attackButton.interactable = false;
             barrierButton.interactable = false;
+            restoreButton.interactable = false;
 
             _coroutineRunnerService.StartCoroutine(Ready());
         }
@@ -80,7 +88,7 @@ namespace _Project.Client.UI.Gameplay.Hud
 
         private IEnumerator Ready()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(ConstantValues.DURATION_STEP_ENEMY);
             
             UpdateSkills();
         }
@@ -91,6 +99,9 @@ namespace _Project.Client.UI.Gameplay.Hud
             barrierButton.SetRecovery(
                 _playerSkills.Find(data => data.Type == SkillType.Barrier).Recovery,
                 _staticDataService.GetPlayerSkillData(SkillType.Barrier).Recovery);
+            restoreButton.SetRecovery(
+                _playerSkills.Find(data => data.Type == SkillType.Restore).Recovery,
+                _staticDataService.GetPlayerSkillData(SkillType.Restore).Recovery);
         }
     }
 }

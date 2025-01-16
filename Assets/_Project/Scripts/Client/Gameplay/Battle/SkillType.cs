@@ -3,6 +3,7 @@
     public enum SkillType
     {
         Attack,
-        Barrier
+        Barrier,
+        Restore
     }
 }

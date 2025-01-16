@@ -9,11 +9,12 @@ namespace _Project.Client.Gameplay.Character
 
         public List<SkillData> SkillDataset => _skillDataset;
 
-        public CharacterSkills(in SkillData barrierData)
+        public CharacterSkills(in SkillData barrierData, in SkillData restoreData)
         {
             _skillDataset = new List<SkillData>
             {
-                barrierData
+                barrierData,
+                restoreData
             };
         }
 

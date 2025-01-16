@@ -24,8 +24,12 @@ namespace _Project.Server.Gameplay.Battle.Services
         
         public void GenerateParticipantData(GenerateBattleMessage message)
         {
-            var playerSkills = new CharacterSkills(new SkillData(SkillType.Barrier));
-            var enemySkills = new CharacterSkills(new SkillData(SkillType.Barrier));
+            var playerSkills = new CharacterSkills(
+                new SkillData(SkillType.Barrier),
+                new SkillData(SkillType.Restore));
+            var enemySkills = new CharacterSkills(
+                new SkillData(SkillType.Barrier),
+                new SkillData(SkillType.Restore));
             
             var playerStats = new CharacterStats(
                 _staticDataService.ServerGameplay.PlayerData.Health,

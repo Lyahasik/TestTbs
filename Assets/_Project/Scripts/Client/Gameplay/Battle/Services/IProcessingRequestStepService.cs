@@ -6,5 +6,6 @@ namespace _Project.Client.Gameplay.Battle.Services
     {
         public void RequestAttack();
         public void RequestBarrier();
+        public void RequestRestore();
     }
 }

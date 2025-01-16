@@ -21,5 +21,10 @@ namespace _Project.Client.Gameplay.Battle.Services
         {
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Barrier });
         }
+
+        public void RequestRestore()
+        {
+            _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Restore });
+        }
     }
 }

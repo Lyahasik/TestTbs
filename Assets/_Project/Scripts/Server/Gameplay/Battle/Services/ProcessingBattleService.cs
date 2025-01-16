@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using _Project.Client.Core.Coroutines;
 using _Project.Client.Core.Network;
@@ -6,6 +7,7 @@ using _Project.Client.Core.Network.Messages;
 using _Project.Client.Core.StaticData.Services;
 using _Project.Client.Gameplay.Battle;
 using _Project.Client.Gameplay.Character;
+using _Project.Constants;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -62,11 +64,16 @@ namespace _Project.Server.Gameplay.Battle.Services
                     CauseDamage(_playerStats, _enemyStats);
                     break;
                 case SkillType.Barrier:
-                    ActivateBarrier(_playerStats, true);
+                    ActivateSkill(_playerStats, SkillType.Barrier, true);
                     Debug.Log($"Player barrier activate");
+                    break;
+                case SkillType.Restore:
+                    ActivateSkill(_playerStats, SkillType.Restore, true);
+                    Debug.Log($"Player restore activate");
                     break;
             }
 
+            ApplyEffectSkills(_playerStats);
             LowerRecoverySkills(_playerStats);
             
             ReceiveResult();
@@ -74,9 +81,9 @@ namespace _Project.Server.Gameplay.Battle.Services
 
         private IEnumerator ProcessingStepEnemy()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(ConstantValues.DURATION_STEP_ENEMY);
 
-            var skillTypeId = Random.Range(0, 1);
+            var skillTypeId = Random.Range(0, ConstantValues.NUMBER_SKILL_TYPES);
             switch ((SkillType) skillTypeId)
             {
                 case SkillType.Attack:
@@ -84,22 +91,27 @@ namespace _Project.Server.Gameplay.Battle.Services
                     CauseDamage(_enemyStats, _playerStats);
                     break;
                 case SkillType.Barrier:
-                    ActivateBarrier(_enemyStats, false);
+                    ActivateSkill(_enemyStats, SkillType.Barrier, false);
                     Debug.Log($"Enemy barrier activate");
+                    break;
+                case SkillType.Restore:
+                    ActivateSkill(_enemyStats, SkillType.Restore, false);
+                    Debug.Log($"Enemy restore activate");
                     break;
             }
 
+            ApplyEffectSkills(_enemyStats);
             LowerRecoverySkills(_enemyStats);
             
             ReceiveResult();
         }
 
-        private void ActivateBarrier(CharacterStats characterStats, in bool isPlayer)
+        private void ActivateSkill(CharacterStats characterStats, in SkillType skillType, in bool isPlayer)
         {
             SkillData skillStaticData = isPlayer
-                ? _staticDataService.GetPlayerSkillData(SkillType.Barrier)
-                : _staticDataService.GetEnemySkillData(SkillType.Barrier);
-            SkillData skillData = characterStats.Skills.GetSkillData(SkillType.Barrier);
+                ? _staticDataService.GetPlayerSkillData(skillType)
+                : _staticDataService.GetEnemySkillData(skillType);
+            SkillData skillData = characterStats.Skills.GetSkillData(skillType);
 
             skillData.TimeAction = skillStaticData.TimeAction;
             skillData.Recovery = skillStaticData.Recovery;
@@ -128,6 +140,23 @@ namespace _Project.Server.Gameplay.Battle.Services
             
             Debug.Log($"Damage: { totalDamage }");
             targetStats.LowerHealth(totalDamage);
+        }
+
+        private void ApplyEffectSkills(CharacterStats characterStats)
+        {
+            characterStats.Skills.SkillDataset.ForEach(data =>
+            {
+                if (data.IsReady)
+                    return;
+
+                switch (data.Type)
+                {
+                    case SkillType.Restore:
+                        characterStats.RestoreHealth(data.Value);
+                        Debug.Log($"Restore health");
+                        break;
+                }
+            });
         }
 
         private void LowerRecoverySkills(CharacterStats characterStats)

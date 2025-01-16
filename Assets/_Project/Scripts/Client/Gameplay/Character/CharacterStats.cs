@@ -23,5 +23,8 @@ namespace _Project.Client.Gameplay.Character
 
         public void LowerHealth(in int value) => 
             _health = Math.Max(_health - value, 0);
+        
+        public void RestoreHealth(in int value) => 
+            _health += value;
     }
 }

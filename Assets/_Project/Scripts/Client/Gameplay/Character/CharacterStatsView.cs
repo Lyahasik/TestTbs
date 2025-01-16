@@ -10,6 +10,7 @@ namespace _Project.Client.Gameplay.Character
     {
         [SerializeField] private TMP_Text healthValueText;
         [SerializeField] private GameObject skillBarrier;
+        [SerializeField] private GameObject skillRestore;
 
         public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset)
         {
@@ -18,7 +19,10 @@ namespace _Project.Client.Gameplay.Character
             UpdateSkillsActive(skillDataset);
         }
 
-        private void UpdateSkillsActive(List<SkillValueData> skillDataset) => 
+        private void UpdateSkillsActive(List<SkillValueData> skillDataset)
+        {
             skillBarrier.SetActive(skillDataset.Find(data => data.Type == SkillType.Barrier).IsActive);
+            skillRestore.SetActive(skillDataset.Find(data => data.Type == SkillType.Restore).IsActive);
+        }
     }
 }
