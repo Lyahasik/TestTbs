@@ -12,7 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cee8f2dd2c84837a8b6eb2d2a49dfa3, type: 3}
   m_Name: GameplayData
   m_EditorClassIdentifier: 
-  PlayerHealth: 50
-  PlayerDamage: 8
-  EnemyHealth: 40
-  EnemyDamage: 8
+  PlayerData:
+    Health: 50
+    Damage: 8
+    SkillDataset:
+    - Type: 1
+      TimeAction: 2
+      Recovery: 4
+      Value: 5
+  EnemyData:
+    Health: 50
+    Damage: 8
+    SkillDataset:
+    - Type: 1
+      TimeAction: 2
+      Recovery: 4
+      Value: 5

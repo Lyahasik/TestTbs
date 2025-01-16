@@ -1,4 +1,5 @@
-﻿using _Project.Client.Gameplay.Battle;
+﻿using System.Collections.Generic;
+using _Project.Client.Gameplay.Battle;
 using UnityEngine;
 
 namespace _Project.Client.Gameplay.Character
@@ -7,9 +8,9 @@ namespace _Project.Client.Gameplay.Character
     {
         [SerializeField] private CharacterStatsView characterStatsView;
 
-        public void SetStats(in ParticipantData participantData)
+        public void SetStats(in ParticipantData participantData, List<SkillValueData> skillDataset = null)
         {
-            characterStatsView.SetStats(participantData);
+            characterStatsView.SetStats(participantData, skillDataset);
         }
     }
 }

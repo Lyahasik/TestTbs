@@ -1,4 +1,6 @@
-﻿using _Project.Client.UI.Gameplay.Hud;
+﻿using System.Collections.Generic;
+using _Project.Client.Gameplay.Character;
+using _Project.Client.UI.Gameplay.Hud;
 
 namespace _Project.Client.Gameplay.Battle.Services
 {
@@ -14,12 +16,15 @@ namespace _Project.Client.Gameplay.Battle.Services
             _createBattleService = createBattleService;
         }
         
-        public void UpdateStats(in ParticipantData playerData, in ParticipantData enemyData)
+        public void UpdateStats(in ParticipantData playerData,
+            List<SkillValueData> playerSkills,
+            in ParticipantData enemyData,
+            List<SkillValueData> enemySkills)
         {
-            _hudView.ShowStep();
+            _hudView.ShowStep(playerSkills);
             
-            _createBattleService.Player.SetStats(playerData);
-            _createBattleService.Enemy.SetStats(enemyData);
+            _createBattleService.Player.SetStats(playerData, playerSkills);
+            _createBattleService.Enemy.SetStats(enemyData, enemySkills);
         }
     }
 }

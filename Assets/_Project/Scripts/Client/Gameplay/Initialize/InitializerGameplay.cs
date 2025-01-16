@@ -39,6 +39,7 @@ namespace _Project.Client.Gameplay.Initialize
 
             var hudView = _gameplayServicesContainer.Single<IGameplayFactory>().CreateHudView();
             hudView.Construct(
+                _staticDataService,
                 _coreData.CoroutinesContainer,
                 _gameplayServicesContainer.Single<IProcessingRequestStepService>());
             
@@ -81,7 +82,10 @@ namespace _Project.Client.Gameplay.Initialize
 
         private void RegisterProcessingBattleService()
         {
-            var service = new ProcessingBattleService(_coreData.CoroutinesContainer, _coreData.NetworkMessengerClient);
+            var service = new ProcessingBattleService(
+                _staticDataService,
+                _coreData.CoroutinesContainer,
+                _coreData.NetworkMessengerClient);
             _gameplayServicesContainer.Register<IProcessingBattleService>(service);
         }
 

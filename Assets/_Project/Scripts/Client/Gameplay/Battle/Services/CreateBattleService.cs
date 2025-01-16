@@ -1,6 +1,8 @@
-﻿using _Project.Client.Core.Factory.Gameplay;
+﻿using System.Collections.Generic;
+using _Project.Client.Core.Factory.Gameplay;
 using _Project.Client.Gameplay.Basis;
 using _Project.Client.Gameplay.Character;
+using _Project.Client.UI.Gameplay.Hud;
 using _Project.Server.Core.Network;
 using _Project.Server.Core.Network.ServerMessages;
 
@@ -11,7 +13,8 @@ namespace _Project.Client.Gameplay.Battle.Services
         private readonly IGameplayFactory _gameplayFactory;
         private readonly NetworkMessengerServer _networkMessengerServer;
         private readonly GameplayBasis _gameplayBasis;
-        
+
+        private HudView _hudView;
         private CharacterView _player;
         private CharacterView _enemy;
 
@@ -32,7 +35,8 @@ namespace _Project.Client.Gameplay.Battle.Services
             _networkMessengerServer.ReceiveMessage(new GenerateBattleMessage());
         }
 
-        public void CreateBattle(in ParticipantData playerData, in ParticipantData enemyData)
+        public void CreateBattle(in ParticipantData playerData,
+            in ParticipantData enemyData)
         {
             _player = _gameplayFactory.CreateCharacter(_gameplayBasis.SpawnPointPlayer);
             _player.SetStats(playerData);

@@ -1,4 +1,5 @@
-using _Project.Client.Gameplay.StaticData;
+using _Project.Client.Core.Network.Messages;
+using _Project.Client.Gameplay.Character;
 using _Project.Constants;
 using UnityEngine;
 
@@ -29,5 +30,11 @@ namespace _Project.Client.Core.StaticData.Services
             
             Debug.Log($"[{ GetType() }] initialize");
         }
+
+        public SkillData GetPlayerSkillData(SkillType skillType) => 
+            ServerGameplay.PlayerData.SkillDataset.Find(data => data.Type == skillType);
+
+        public SkillData GetEnemySkillData(SkillType skillType) => 
+            ServerGameplay.PlayerData.SkillDataset.Find(data => data.Type == skillType);
     }
 }

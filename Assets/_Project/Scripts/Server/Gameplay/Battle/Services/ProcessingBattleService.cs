@@ -1,24 +1,30 @@
 ﻿using System.Collections;
+using System.Linq;
 using _Project.Client.Core.Coroutines;
 using _Project.Client.Core.Network;
 using _Project.Client.Core.Network.Messages;
+using _Project.Client.Core.StaticData.Services;
 using _Project.Client.Gameplay.Battle;
 using _Project.Client.Gameplay.Character;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Project.Server.Gameplay.Battle.Services
 {
     public class ProcessingBattleService : IProcessingBattleService
     {
+        private readonly IStaticDataService _staticDataService;
         private readonly ICoroutineRunnerService _coroutineRunnerService;
         private readonly NetworkMessengerClient _networkMessengerClient;
 
         private CharacterStats _playerStats;
         private CharacterStats _enemyStats;
 
-        public ProcessingBattleService(ICoroutineRunnerService coroutineRunnerService,
+        public ProcessingBattleService(IStaticDataService staticDataService,
+            ICoroutineRunnerService coroutineRunnerService,
             NetworkMessengerClient networkMessengerClient)
         {
+            _staticDataService = staticDataService;
             _coroutineRunnerService = coroutineRunnerService;
             _networkMessengerClient = networkMessengerClient;
         }
@@ -40,8 +46,10 @@ namespace _Project.Server.Gameplay.Battle.Services
         {
             _networkMessengerClient.ReceiveMessage(new UpdateStatsDataMessage
             {
-                Player = new ParticipantData { Health = _playerStats.Health, Damage = _playerStats.Damage },
-                Enemy = new ParticipantData { Health = _enemyStats.Health, Damage = _enemyStats.Damage }
+                ParticipantPlayer = new ParticipantData { Health = _playerStats.Health, Damage = _playerStats.Damage },
+                SkillsPlayer = _playerStats.Skills.GetSkillDataset(),
+                ParticipantEnemy = new ParticipantData { Health = _enemyStats.Health, Damage = _enemyStats.Damage },
+                SkillsEnemy = _enemyStats.Skills.GetSkillDataset(),
             });
         }
 
@@ -53,7 +61,13 @@ namespace _Project.Server.Gameplay.Battle.Services
                     CauseDamage(_playerStats, _enemyStats);
                     Debug.Log($"Player attack: { _playerStats.Damage } ");
                     break;
+                case SkillType.Barrier:
+                    ActivateBarrier(_playerStats, true);
+                    Debug.Log($"Player barrier activate");
+                    break;
             }
+
+            LowerRecoverySkills(_playerStats);
             
             ReceiveResult();
         }
@@ -61,14 +75,71 @@ namespace _Project.Server.Gameplay.Battle.Services
         private IEnumerator ProcessingStepEnemy()
         {
             yield return new WaitForSeconds(1f);
-            
-            CauseDamage(_enemyStats, _playerStats);
-            Debug.Log($"Enemy attack: { _enemyStats.Damage } ");
+
+            var skillTypeId = Random.Range(0, 1);
+            switch ((SkillType) skillTypeId)
+            {
+                case SkillType.Attack:
+                    CauseDamage(_enemyStats, _playerStats);
+                    Debug.Log($"Enemy attack: { _enemyStats.Damage }");
+                    break;
+                case SkillType.Barrier:
+                    ActivateBarrier(_enemyStats, false);
+                    Debug.Log($"Enemy barrier activate");
+                    break;
+            }
+
+            LowerRecoverySkills(_enemyStats);
             
             ReceiveResult();
         }
 
-        private void CauseDamage(CharacterStats attakingStats, CharacterStats targetStats) => 
-            targetStats.LowerHealth(attakingStats.Damage);
+        private void ActivateBarrier(CharacterStats characterStats, in bool isPlayer)
+        {
+            SkillData skillStaticData = isPlayer
+                ? _staticDataService.GetPlayerSkillData(SkillType.Barrier)
+                : _staticDataService.GetEnemySkillData(SkillType.Barrier);
+            SkillData skillData = characterStats.Skills.GetSkillData(SkillType.Barrier);
+
+            skillData.TimeAction = skillStaticData.TimeAction;
+            skillData.Recovery = skillStaticData.Recovery;
+            skillData.Value = skillStaticData.Value;
+        }
+
+        private void CauseDamage(CharacterStats attakingStats, CharacterStats targetStats)
+        {
+            var totalDamage = attakingStats.Damage;
+
+            var skillBarrier = targetStats.Skills.GetSkillData(SkillType.Barrier);
+            if (skillBarrier.IsActive)
+            {
+                if (skillBarrier.Value > totalDamage)
+                {
+                    skillBarrier.Value -= totalDamage;
+                    totalDamage = 0;
+                }
+                else
+                {
+                    totalDamage -= skillBarrier.Value;
+                    skillBarrier.TimeAction = 0;
+                    skillBarrier.Value = 0;
+                }
+            }
+            
+            targetStats.LowerHealth(totalDamage);
+        }
+
+        private void LowerRecoverySkills(CharacterStats characterStats)
+        {
+            characterStats.Skills.SkillDataset.ForEach(data =>
+            {
+                if (data.IsReady)
+                    return;
+                
+                data.Recovery--;
+                if (data.TimeAction > 0)
+                    data.TimeAction--;
+            });
+        }
     }
 }

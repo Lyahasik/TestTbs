@@ -16,5 +16,10 @@ namespace _Project.Client.Gameplay.Battle.Services
         {
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Attack });
         }
+
+        public void RequestBarrier()
+        {
+            _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Barrier });
+        }
     }
 }

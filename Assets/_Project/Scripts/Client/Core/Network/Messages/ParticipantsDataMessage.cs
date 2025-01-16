@@ -5,7 +5,7 @@ namespace _Project.Client.Core.Network.Messages
 {
     public struct ParticipantsDataMessage : INetworkMessage
     {
-        public ParticipantData Player;
-        public ParticipantData Enemy;
+        public ParticipantData ParticipantPlayer;
+        public ParticipantData ParticipantEnemy;
     }
 }

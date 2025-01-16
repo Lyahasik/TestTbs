@@ -24,14 +24,18 @@ namespace _Project.Client.Core.Network
         {
             var participantsDataMessage = (ParticipantsDataMessage) message;
             
-            _createBattleService.CreateBattle(participantsDataMessage.Player, participantsDataMessage.Enemy);
+            _createBattleService.CreateBattle(participantsDataMessage.ParticipantPlayer, participantsDataMessage.ParticipantEnemy);
         }
 
         private void OnGetUpdateStatsDataMessage(INetworkMessage message)
         {
             var updateStatsDataMessage = (UpdateStatsDataMessage) message;
             
-            _processingStatsService.UpdateStats(updateStatsDataMessage.Player, updateStatsDataMessage.Enemy);
+            _processingStatsService.UpdateStats(
+                updateStatsDataMessage.ParticipantPlayer,
+                updateStatsDataMessage.SkillsPlayer,
+                updateStatsDataMessage.ParticipantEnemy,
+                updateStatsDataMessage.SkillsEnemy);
         }
     }
 }

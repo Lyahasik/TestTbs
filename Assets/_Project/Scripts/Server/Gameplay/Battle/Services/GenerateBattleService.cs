@@ -24,19 +24,24 @@ namespace _Project.Server.Gameplay.Battle.Services
         
         public void GenerateParticipantData(GenerateBattleMessage message)
         {
+            var playerSkills = new CharacterSkills(new SkillData(SkillType.Barrier));
+            var enemySkills = new CharacterSkills(new SkillData(SkillType.Barrier));
+            
             var playerStats = new CharacterStats(
-                _staticDataService.ServerGameplay.PlayerHealth,
-                _staticDataService.ServerGameplay.PlayerDamage);
+                _staticDataService.ServerGameplay.PlayerData.Health,
+                _staticDataService.ServerGameplay.PlayerData.Damage,
+                playerSkills);
             var enemyStats = new CharacterStats(
-                _staticDataService.ServerGameplay.EnemyHealth,
-                _staticDataService.ServerGameplay.EnemyDamage);
+                _staticDataService.ServerGameplay.EnemyData.Health,
+                _staticDataService.ServerGameplay.EnemyData.Damage,
+                enemySkills);
             
             _processingBattleService.Initialize(playerStats, enemyStats);
             
             _networkMessengerClient.ReceiveMessage(new ParticipantsDataMessage
             {
-                Player = new ParticipantData { Health = playerStats.Health, Damage = playerStats.Damage },
-                Enemy = new ParticipantData { Health = enemyStats.Health, Damage = enemyStats.Damage }
+                ParticipantPlayer = new ParticipantData { Health = playerStats.Health, Damage = playerStats.Damage },
+                ParticipantEnemy = new ParticipantData { Health = enemyStats.Health, Damage = enemyStats.Damage }
             });
         }
     }
