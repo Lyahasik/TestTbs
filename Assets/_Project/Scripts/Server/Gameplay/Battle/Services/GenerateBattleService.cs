@@ -27,11 +27,13 @@ namespace _Project.Server.Gameplay.Battle.Services
             var playerSkills = new CharacterSkills(
                 new SkillData(SkillType.Barrier),
                 new SkillData(SkillType.Restore),
-                new SkillData(SkillType.Fire));
+                new SkillData(SkillType.Fire),
+                new SkillData(SkillType.Clear));
             var enemySkills = new CharacterSkills(
                 new SkillData(SkillType.Barrier),
                 new SkillData(SkillType.Restore),
-                new SkillData(SkillType.Fire));
+                new SkillData(SkillType.Fire),
+                new SkillData(SkillType.Clear));
             
             var playerStats = new CharacterStats(
                 _staticDataService.ServerGameplay.PlayerData.Health,

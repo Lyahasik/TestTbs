@@ -5,6 +5,7 @@
         Attack,
         Barrier,
         Restore,
-        Fire
+        Fire,
+        Clear
     }
 }

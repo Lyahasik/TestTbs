@@ -11,13 +11,15 @@ namespace _Project.Client.Gameplay.Character
 
         public CharacterSkills(in SkillData barrierData,
             in SkillData restoreData,
-            in SkillData fireData)
+            in SkillData fireData,
+            in SkillData clearData)
         {
             _skillDataset = new List<SkillData>
             {
                 barrierData,
                 restoreData,
-                fireData
+                fireData,
+                clearData
             };
         }
 

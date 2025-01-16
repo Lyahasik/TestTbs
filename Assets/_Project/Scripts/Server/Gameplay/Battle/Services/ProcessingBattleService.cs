@@ -76,6 +76,11 @@ namespace _Project.Server.Gameplay.Battle.Services
                     ActivateSkill(_playerStats, SkillType.Fire, true);
                     Debug.Log($"Player fire activate");
                     break;
+                case SkillType.Clear:
+                    ActivateSkill(_playerStats, SkillType.Clear, true);
+                    DeactivateSkill(_enemyStats, SkillType.Fire);
+                    Debug.Log($"Player clear fire activate");
+                    break;
             }
 
             ApplyEffectSkills(_playerStats, _enemyStats);
@@ -108,6 +113,11 @@ namespace _Project.Server.Gameplay.Battle.Services
                     ActivateSkill(_enemyStats, SkillType.Fire, false);
                     Debug.Log($"Enemy fire activate");
                     break;
+                case SkillType.Clear:
+                    ActivateSkill(_enemyStats, SkillType.Clear, false);
+                    DeactivateSkill(_playerStats, SkillType.Fire);
+                    Debug.Log($"Enemy clear fire activate");
+                    break;
             }
 
             ApplyEffectSkills(_enemyStats, _playerStats);
@@ -126,6 +136,15 @@ namespace _Project.Server.Gameplay.Battle.Services
             skillData.TimeAction = skillStaticData.TimeAction;
             skillData.Recovery = skillStaticData.Recovery;
             skillData.Value = skillStaticData.Value;
+        }
+
+        private void DeactivateSkill(CharacterStats characterStats, in SkillType skillType)
+        {
+            SkillData skillData = characterStats.Skills.GetSkillData(skillType);
+
+            skillData.TimeAction = 0;
+            skillData.Recovery = 0;
+            skillData.Value = 0;
         }
 
         private void CauseDamage(CharacterStats attakingStats, CharacterStats targetStats)

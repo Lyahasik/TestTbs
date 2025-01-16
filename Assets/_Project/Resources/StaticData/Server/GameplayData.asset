@@ -29,6 +29,10 @@ MonoBehaviour:
       TimeAction: 5
       Recovery: 6
       Value: 1
+    - Type: 4
+      TimeAction: 0
+      Recovery: 5
+      Value: 0
   EnemyData:
     Health: 50
     Damage: 8
@@ -45,3 +49,7 @@ MonoBehaviour:
       TimeAction: 5
       Recovery: 6
       Value: 1
+    - Type: 4
+      TimeAction: 0
+      Recovery: 5
+      Value: 0

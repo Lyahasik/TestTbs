@@ -23,5 +23,8 @@ namespace _Project.Client.Gameplay.Battle.Services
 
         public void RequestFire() => 
             _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Fire });
+
+        public void RequestClear() => 
+            _networkMessengerServer.ReceiveMessage(new StepDataMessage { SkillType = SkillType.Clear });
     }
 }

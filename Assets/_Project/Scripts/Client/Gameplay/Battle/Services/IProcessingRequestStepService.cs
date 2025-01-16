@@ -8,5 +8,6 @@ namespace _Project.Client.Gameplay.Battle.Services
         public void RequestBarrier();
         public void RequestRestore();
         public void RequestFire();
+        public void RequestClear();
     }
 }
